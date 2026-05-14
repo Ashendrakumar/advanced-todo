@@ -44,8 +44,7 @@ const projectSchema = new mongoose.Schema(
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         role: { type: String, enum: ["lead", "user"], default: "user" },
         addedAt: { type: Date, default: Date.now },
-        inviteToken: { type: String, select: false }, // SHA-256 hash of raw token
-        inviteExpires: { type: Date }, // 7-day TTL
+        inviteToken: { type: String, select: false },
       },
     ],
     steps: [stepSchema],

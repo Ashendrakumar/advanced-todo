@@ -191,8 +191,6 @@ export class DashboardComponent implements OnInit {
   canCreateProject() { return ['admin', 'lead'].includes(this.user?.role || ''); }
 
   ngOnInit() {
-    console.log('----------Das');
-
     if (['admin', 'lead', 'user'].includes(this.user?.role || '')) {
       this.projectService.getDashboard().subscribe(s => this.stats = s);
     }

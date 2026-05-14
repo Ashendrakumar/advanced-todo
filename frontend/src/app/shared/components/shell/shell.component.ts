@@ -36,11 +36,11 @@ import { ThemeService } from "../../../core/services/theme.service";
     MatBadgeModule,
   ],
   template: `
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #sidenav mode="side" [opened]="!isMobile" class="sidenav">
+    <mat-sidenav-container class="sidenav-container" [hasBackdrop]="isMobile" >
+      <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidenav">
         <div class="sidenav-header">
-          <!-- <span class="logo">✅</span>
-          <span class="app-name">Project Todo</span> -->
+          <span class="logo">✅</span>
+          <span class="app-name">Project Todo</span>
         </div>
         <mat-nav-list>
           <a
@@ -114,7 +114,7 @@ import { ThemeService } from "../../../core/services/theme.service";
           </div>
         </mat-toolbar>
         <div class="content">
-           <ng-content> </ng-content>
+          <ng-content> </ng-content>
         </div>
       </mat-sidenav-content>
     </mat-sidenav-container>
@@ -251,7 +251,11 @@ export class ShellComponent {
     private auth: AuthService,
     private themeService: ThemeService,
     private router: Router,
-  ) { }
+  ) {
+    window.addEventListener("resize", () => {
+      this.isMobile = window.innerWidth < 768;
+    });
+  }
 
   toggleTheme() {
     this.themeService.toggle();
