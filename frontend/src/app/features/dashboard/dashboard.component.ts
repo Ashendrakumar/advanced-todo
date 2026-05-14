@@ -186,11 +186,13 @@ export class DashboardComponent implements OnInit {
   todos: SimpleTodo[] = [];
   user = this.auth.currentUser();
 
-  constructor(private projectService: ProjectService, private todoService: TodoService, private auth: AuthService) {}
+  constructor(private projectService: ProjectService, private todoService: TodoService, private auth: AuthService) { }
 
   canCreateProject() { return ['admin', 'lead'].includes(this.user?.role || ''); }
 
   ngOnInit() {
+    console.log('----------Das');
+
     if (['admin', 'lead', 'user'].includes(this.user?.role || '')) {
       this.projectService.getDashboard().subscribe(s => this.stats = s);
     }

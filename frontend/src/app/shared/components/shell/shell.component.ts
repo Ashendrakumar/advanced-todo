@@ -5,6 +5,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
   Router,
+  RouterModule,
 } from "@angular/router";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -22,9 +23,9 @@ import { ThemeService } from "../../../core/services/theme.service";
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     RouterLink,
     RouterLinkActive,
-    RouterOutlet,
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
@@ -38,8 +39,8 @@ import { ThemeService } from "../../../core/services/theme.service";
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #sidenav mode="side" [opened]="!isMobile" class="sidenav">
         <div class="sidenav-header">
-          <span class="logo">✅</span>
-          <span class="app-name">Project Todo</span>
+          <!-- <span class="logo">✅</span>
+          <span class="app-name">Project Todo</span> -->
         </div>
         <mat-nav-list>
           <a
@@ -113,7 +114,7 @@ import { ThemeService } from "../../../core/services/theme.service";
           </div>
         </mat-toolbar>
         <div class="content">
-          <router-outlet />
+           <ng-content> </ng-content>
         </div>
       </mat-sidenav-content>
     </mat-sidenav-container>
@@ -250,7 +251,7 @@ export class ShellComponent {
     private auth: AuthService,
     private themeService: ThemeService,
     private router: Router,
-  ) {}
+  ) { }
 
   toggleTheme() {
     this.themeService.toggle();

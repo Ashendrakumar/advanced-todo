@@ -106,7 +106,8 @@ export class TodoListComponent implements OnInit {
   todos: SimpleTodo[] = [];
   search = ''; filter = 'all';
 
-  constructor(private ts: TodoService, private auth: AuthService, private snack: MatSnackBar) {}
+  constructor(private ts: TodoService, private auth: AuthService, private snack: MatSnackBar) {
+  }
 
   isOwner(todo: SimpleTodo) {
     const user = this.auth.currentUser();

@@ -42,7 +42,10 @@ export class AcceptInviteComponent {
   }
   submit() {
     this.http.post(`${environment.apiUrl}/auth/accept-invite`, { token: this.token, name: this.name, password: this.password }).subscribe({
-      next: () => this.done = true,
+      next: (resp: any) => {
+        console.log(resp);
+        this.done = true;
+      },
       error: err => this.error = err.error?.message || 'Error'
     });
   }

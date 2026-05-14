@@ -117,7 +117,7 @@ export class AdminComponent implements OnInit {
   leadForm = { name: '', email: '' };
   leadMsg = '';
 
-  constructor(private userService: UserService, private auth: AuthService, private snack: MatSnackBar) {}
+  constructor(private userService: UserService, private auth: AuthService, private snack: MatSnackBar) { }
 
   filteredUsers() { return this.users.filter(u => u.name.toLowerCase().includes(this.userSearch.toLowerCase()) || u.email.toLowerCase().includes(this.userSearch.toLowerCase())); }
 
@@ -139,7 +139,10 @@ export class AdminComponent implements OnInit {
 
   createLead() {
     this.userService.createLead(this.leadForm.email, this.leadForm.name).subscribe({
-      next: () => { this.leadMsg = `Invite sent to ${this.leadForm.email}`; this.leadForm = { name: '', email: '' }; },
+      next: (res) => {
+        console.log('res', res);
+        this.leadMsg = `Invite sent to ${this.leadForm.email}`; this.leadForm = { name: '', email: '' };
+      },
       error: err => this.snack.open(err.error?.message || 'Error', '', { duration: 3000 })
     });
   }

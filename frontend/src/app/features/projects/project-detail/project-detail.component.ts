@@ -278,7 +278,7 @@ export class ProjectDetailComponent implements OnInit {
   newStep = { title: '', description: '' };
   newItem: any = { text: '', description: '', tag: 'none' };
 
-  constructor(private route: ActivatedRoute, private ps: ProjectService, private auth: AuthService, private snack: MatSnackBar) {}
+  constructor(private route: ActivatedRoute, private ps: ProjectService, private auth: AuthService, private snack: MatSnackBar) { }
 
   canEdit() { return ['admin', 'lead'].includes(this.auth.currentUser()?.role || ''); }
   stepIndex(step: Step) { return this.project!.steps.indexOf(step); }
