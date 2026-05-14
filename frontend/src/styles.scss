@@ -1,7 +1,7 @@
-@use "@angular/material" as mat;
-
 /* Include core styles once */
-@include mat.core();
+// @include mat.core();
+
+@use "@angular/material" as mat;
 
 /* ---- Light Theme ---- */
 $light-theme: mat.define-theme(
@@ -9,11 +9,14 @@ $light-theme: mat.define-theme(
     color: (
       theme-type: light,
       primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
+      tertiary: mat.$violet-palette,
     ),
     typography: (
       brand-family: "Inter, sans-serif",
       plain-family: "Inter, sans-serif",
+      bold-weight: 900,
+      medium-weight: 500,
+      regular-weight: 300,
     ),
     density: (
       scale: 0,
@@ -27,11 +30,14 @@ $dark-theme: mat.define-theme(
     color: (
       theme-type: dark,
       primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
+      tertiary: mat.$violet-palette,
     ),
     typography: (
       brand-family: "Inter, sans-serif",
       plain-family: "Inter, sans-serif",
+      bold-weight: 900,
+      medium-weight: 500,
+      regular-weight: 300,
     ),
     density: (
       scale: 0,
@@ -58,6 +64,7 @@ body {
   font-family: "Inter", sans-serif;
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+  overflow-x: hidden;
 }
 
 /* Scrollbar styling */
@@ -88,4 +95,75 @@ body {
 }
 .mat-mdc-form-field {
   font-family: "Inter", sans-serif !important;
+}
+
+:root {
+  --mat-sys-outline-variant: #eaeff5;
+  --mat-sys-outline: #64748b;
+
+  --mat-sys-primary: #3b82f6;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #dbeafe;
+  --mat-sys-on-primary-container: #001e3c;
+
+  --mat-sys-secondary: #64748b;
+  --mat-sys-on-secondary: #ffffff;
+  --mat-sys-secondary-container: #cfd8e3;
+  --mat-sys-on-secondary-container: #1a2e3b;
+
+  --mat-sys-tertiary: #2563eb;
+  --mat-sys-on-tertiary: #ffffff;
+  --mat-sys-tertiary-container: #dbeafe;
+  --mat-sys-on-tertiary-container: #001e3c;
+
+  --mat-sys-error: #b00020;
+  --mat-sys-on-error: #ffffff;
+  --mat-sys-error-container: #fcd8df;
+  --mat-sys-on-error-container: #410001;
+
+  --mat-sys-success: #4caf50;
+  --mat-sys-on-success: #ffffff;
+  --mat-sys-success-container: #c8f8e4;
+  --mat-sys-on-success-container: #00201d;
+
+  --mat-sys-background: #ffffff;
+  --mat-sys-on-background: #000000;
+
+  --mat-sys-surface: #ffffff;
+  --mat-sys-on-surface: #000000;
+
+  & .dark-theme {
+    --mat-sys-outline-variant: #27272b;
+    --mat-sys-outline: #64748b;
+    --mat-sys-primary: #3b82f6;
+    --mat-sys-on-primary: #ffffff;
+    --mat-sys-primary-container: #0a2446;
+    --mat-sys-on-primary-container: #dbeafe;
+
+    --mat-sys-secondary: #64748b;
+    --mat-sys-on-secondary: #ffffff;
+    --mat-sys-secondary-container: #1a2e3b;
+    --mat-sys-on-secondary-container: #cfd8e3;
+
+    --mat-sys-tertiary: #2563eb;
+    --mat-sys-on-tertiary: #ffffff;
+    --mat-sys-tertiary-container: #0a2446;
+    --mat-sys-on-tertiary-container: #dbeafe;
+
+    --mat-sys-error: #cf6679;
+    --mat-sys-on-error: #000000;
+    --mat-sys-error-container: #8c1c13;
+    --mat-sys-on-error-container: #fcd8df;
+
+    --mat-sys-success: #4caf50;
+    --mat-sys-on-success: #ffffff;
+    --mat-sys-success-container: #2e7d32;
+    --mat-sys-on-success-container: #c8f8e4;
+
+    --mat-sys-background: #121212;
+    --mat-sys-on-background: #ffffff;
+
+    --mat-sys-surface: #121212;
+    --mat-sys-on-surface: #ffffff;
+  }
 }

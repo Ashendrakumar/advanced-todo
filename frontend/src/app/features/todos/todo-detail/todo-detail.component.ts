@@ -148,7 +148,7 @@ import { AuthService } from '../../../core/services/auth.service';
     .stat-val { font-size: 22px; font-weight: 700; }
     .stat-lbl { font-size: 13px; color: var(--mat-sys-on-surface-variant); flex: 1; }
     .pct { font-size: 22px; font-weight: 700; color: var(--mat-sys-primary); }
-    .add-step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px; }
+    .add-step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px;  }
     .step-field { flex: 1; }
     .step-panel { margin-bottom: 10px; }
     .step-count { margin-left: 10px; font-size: 12px; color: var(--mat-sys-on-surface-variant); }
@@ -171,7 +171,7 @@ export class TodoDetailComponent implements OnInit {
   todo: SimpleTodo | null = null;
   newStepTitle = ''; addItemStep = ''; newItemText = '';
 
-  constructor(private route: ActivatedRoute, private ts: TodoService, private auth: AuthService, private snack: MatSnackBar) {}
+  constructor(private route: ActivatedRoute, private ts: TodoService, private auth: AuthService, private snack: MatSnackBar) { }
 
   isOwner() {
     const user = this.auth.currentUser();
@@ -185,7 +185,11 @@ export class TodoDetailComponent implements OnInit {
 
   addStep() {
     if (!this.newStepTitle) return;
-    this.ts.addStep(this.todo!._id, this.newStepTitle).subscribe(t => { this.todo = t; this.newStepTitle = ''; });
+    this.ts.addStep(this.todo!._id, this.newStepTitle).subscribe(t => {
+      console.log(t, '///');
+      console.log(this.todo, '======');
+      this.todo = t; this.newStepTitle = '';
+    });
   }
 
   addItem(stepId: string) {

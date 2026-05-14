@@ -47,7 +47,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
         <div class="todos-grid">
           @for (todo of filtered(); track todo._id) {
-            <mat-card class="todo-card">
+            <mat-card class="todo-card" [routerLink]="['/todos', todo._id]">
               <mat-card-content>
                 <div class="card-header">
                   <mat-icon [class]="todo.visibility === 'public' ? 'pub' : 'priv'">
@@ -67,7 +67,7 @@ import { AuthService } from '../../../core/services/auth.service';
                   <span class="pct">{{ todo.stats.percent }}%</span>
                 </div>
                 <mat-progress-bar mode="determinate" [value]="todo.stats.percent" />
-                <a mat-button color="primary" [routerLink]="['/todos', todo._id]" class="view-btn">View →</a>
+                <!-- <a mat-button color="primary"  class="view-btn">View →</a> -->
               </mat-card-content>
             </mat-card>
           }
@@ -87,7 +87,7 @@ import { AuthService } from '../../../core/services/auth.service';
     .filter-chips { display: flex; gap: 8px; padding-top: 4px; }
     .active-filter { background: var(--mat-sys-primary-container) !important; color: var(--mat-sys-on-primary-container) !important; }
     .todos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-    .todo-card mat-card-content { padding: 16px !important; }
+    .todo-card mat-card-content { padding: 16px !important; cursor: pointer }
     .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
     .pub { color: #1976d2; margin-top: 2px; }
     .priv { color: var(--mat-sys-on-surface-variant); margin-top: 2px; }
@@ -126,6 +126,7 @@ export class TodoListComponent implements OnInit {
 
   delete(id: string, event: Event) {
     event.preventDefault();
+    event.stopPropagation();
     this.ts.deleteTodo(id).subscribe({
       next: () => { this.todos = this.todos.filter(t => t._id !== id); this.snack.open('Deleted', '', { duration: 2000 }); },
       error: err => this.snack.open(err.error?.message || 'Error', '', { duration: 3000 })

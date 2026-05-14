@@ -40,29 +40,37 @@ import { TodoService, SimpleTodo } from '../../core/services/todo.service';
           <div class="stats-grid">
             <mat-card class="stat-card">
               <mat-card-content>
-                <div class="stat-icon blue"><mat-icon>folder</mat-icon></div>
-                <div class="stat-val">{{ stats.totalProjects }}</div>
+                <div class="stat-icon-container" style="display: flex; align-items: start; justify-content: space-between; gap: 12px;">
+                  <div class="stat-icon blue"><mat-icon>folder</mat-icon></div>
+                  <span class="stat-val color-blue">{{ stats.totalProjects }}</span>
+                </div>
                 <div class="stat-lbl">Total Projects</div>
               </mat-card-content>
             </mat-card>
             <mat-card class="stat-card">
               <mat-card-content>
-                <div class="stat-icon green"><mat-icon>play_circle</mat-icon></div>
-                <div class="stat-val">{{ stats.activeProjects }}</div>
+                <div class="stat-icon-container" style="display: flex; align-items: start; justify-content: space-between; gap: 12px;">
+                  <div class="stat-icon green"><mat-icon>play_circle</mat-icon></div>
+                  <span class="stat-val color-green">{{ stats.activeProjects }}</span>
+                </div>
                 <div class="stat-lbl">Active</div>
               </mat-card-content>
             </mat-card>
             <mat-card class="stat-card">
               <mat-card-content>
-                <div class="stat-icon purple"><mat-icon>check_circle</mat-icon></div>
-                <div class="stat-val">{{ stats.completedProjects }}</div>
+                <div class="stat-icon-container" style="display: flex; align-items: start; justify-content: space-between; gap: 12px;">
+                  <div class="stat-icon purple"><mat-icon>check_circle</mat-icon></div>
+                  <span class="stat-val color-purple">{{ stats.completedProjects }}</span>
+                </div>
                 <div class="stat-lbl">Completed</div>
               </mat-card-content>
             </mat-card>
             <mat-card class="stat-card">
               <mat-card-content>
-                <div class="stat-icon orange"><mat-icon>task_alt</mat-icon></div>
-                <div class="stat-val">{{ stats.completedItems }}/{{ stats.totalItems }}</div>
+                <div class="stat-icon-container" style="display: flex; align-items: start; justify-content: space-between; gap: 12px;">
+                  <div class="stat-icon orange"><mat-icon>task_alt</mat-icon></div>
+                  <span class="stat-val color-orange">{{ stats.completedItems }}/{{ stats.totalItems }}</span>
+                </div>
                 <div class="stat-lbl">Items Done</div>
               </mat-card-content>
             </mat-card>
@@ -82,28 +90,29 @@ import { TodoService, SimpleTodo } from '../../core/services/todo.service';
 
           <!-- Projects List -->
           @if (stats.projects.length > 0) {
-            <h2 class="section-title">Projects</h2>
+            <div class="section-header">
+              <h2 class="section-title">Projects</h2>
+              <a mat-button routerLink="/projects">View all</a>
+            </div>
             <div class="projects-grid">
-              @for (p of stats.projects; track p._id) {
-                <a [routerLink]="['/projects', p._id]" class="project-card-link">
-                  <mat-card class="project-card">
-                    <mat-card-content>
-                      <div class="project-color-bar" [style.background]="p.color"></div>
-                      <div class="project-info">
-                        <div class="project-name">{{ p.name }}</div>
-                        <mat-chip-set>
-                          <mat-chip [class]="'status-' + p.status" highlighted>{{ p.status }}</mat-chip>
-                        </mat-chip-set>
-                        <div class="project-progress">
-                          <div class="progress-nums">{{ p.stats.completed }}/{{ p.stats.total }} items
-                            <span class="pct-badge">{{ p.stats.percent }}%</span>
-                          </div>
-                          <mat-progress-bar mode="determinate" [value]="p.stats.percent" />
+              @for (p of stats.projects | slice:0:3; track p._id ) {
+                <mat-card class="project-card project-card-link" [routerLink]="['/projects', p._id]">
+                  <mat-card-content>
+                    <div class="project-color-bar" [style.background]="p.color"></div>
+                    <div class="project-info">
+                      <div class="project-name">{{ p.name }}</div>
+                      <mat-chip-set>
+                        <mat-chip [class]="'status-' + p.status" highlighted>{{ p.status | titlecase }}</mat-chip>
+                      </mat-chip-set>
+                      <div class="project-progress">
+                        <div class="progress-nums">{{ p.stats.completed }}/{{ p.stats.total }} items
+                          <span class="pct-badge">{{ p.stats.percent }}%</span>
                         </div>
+                        <mat-progress-bar mode="determinate" [value]="p.stats.percent" />
                       </div>
-                    </mat-card-content>
-                  </mat-card>
-                </a>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
               }
             </div>
           }
@@ -111,27 +120,28 @@ import { TodoService, SimpleTodo } from '../../core/services/todo.service';
 
         <!-- Recent Todos -->
         @if (todos.length > 0) {
-          <h2 class="section-title">Recent Todos</h2>
+          <div class="section-header">
+            <h2 class="section-title">Recent Todos</h2>
+            <a mat-button routerLink="/todos">View all</a>
+          </div>
           <div class="todos-list">
-            @for (todo of todos.slice(0, 5); track todo._id) {
-              <a [routerLink]="['/todos', todo._id]" class="todo-row-link">
-                <mat-card class="todo-row">
-                  <mat-card-content>
-                    <div class="todo-left">
-                      <mat-icon [class]="todo.visibility === 'public' ? 'pub-icon' : 'priv-icon'">
-                        {{ todo.visibility === 'public' ? 'public' : 'lock' }}
-                      </mat-icon>
-                      <div>
-                        <div class="todo-title">{{ todo.title }}</div>
-                        <div class="todo-sub">{{ todo.stats.completed }}/{{ todo.stats.total }} items</div>
-                      </div>
+            @for (todo of todos | slice:0:5; track todo._id) {
+              <mat-card class="todo-row todo-row-link" [routerLink]="['/todos', todo._id]">
+                <mat-card-content>
+                  <div class="todo-left">
+                    <mat-icon [class]="todo.visibility === 'public' ? 'pub-icon' : 'priv-icon'">
+                      {{ todo.visibility === 'public' ? 'public' : 'lock' }}
+                    </mat-icon>
+                    <div>
+                      <div class="todo-title">{{ todo.title }}</div>
+                      <div class="todo-sub">{{ todo.stats.completed }}/{{ todo.stats.total }} items</div>
                     </div>
-                    <div class="todo-pct">{{ todo.stats.percent }}%</div>
-                  </mat-card-content>
-                </mat-card>
-              </a>
+                  </div>
+                  <div class="todo-pct">{{ todo.stats.percent }}%</div>
+                </mat-card-content>
+              </mat-card>
+
             }
-            <a mat-button routerLink="/todos" color="primary">View all todos →</a>
           </div>
         }
       </div>
@@ -147,8 +157,9 @@ import { TodoService, SimpleTodo } from '../../core/services/todo.service';
     .stat-card mat-card-content { padding: 20px !important; }
     .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
     .stat-icon mat-icon { color: #fff; }
-    .blue { background: #1976d2; } .green { background: #388e3c; } .purple { background: #7b1fa2; } .orange { background: #f57c00; }
-    .stat-val { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .blue { background: #1976d2;  } .green { background: #388e3c; } .purple { background: #7b1fa2; } .orange { background: #f57c00; }
+    .stat-val { font-size: 2.2rem; font-weight: bolder; margin-bottom: 4px; }
+    .color-blue { color: #1976d2; } .color-green { color: #388e3c; } .color-purple { color: #7b1fa2; } .color-orange { color: #f57c00; }
     .stat-lbl { font-size: 13px; color: var(--mat-sys-on-surface-variant); }
     .progress-card { margin-bottom: 28px; }
     .progress-card mat-card-content { padding: 20px !important; }
@@ -156,9 +167,10 @@ import { TodoService, SimpleTodo } from '../../core/services/todo.service';
     .progress-title { font-weight: 600; font-size: 15px; }
     .progress-pct { font-size: 22px; font-weight: 700; color: var(--mat-sys-primary); }
     .progress-sub { font-size: 12px; color: var(--mat-sys-on-surface-variant); margin-top: 8px; margin-bottom: 0; }
+    .section-header { display: flex; justify-content: space-between; align-items: center;  }
     .section-title { font-size: 18px; font-weight: 600; margin: 0 0 14px; }
     .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .project-card-link { text-decoration: none; }
+    .project-card-link { text-decoration: none; cursor: pointer; }
     .project-card { cursor: pointer; transition: box-shadow .2s; }
     .project-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.15); }
     .project-card mat-card-content { padding: 0 !important; overflow: hidden; }
@@ -168,17 +180,17 @@ import { TodoService, SimpleTodo } from '../../core/services/todo.service';
     .project-progress { margin-top: 12px; }
     .progress-nums { display: flex; justify-content: space-between; font-size: 12px; color: var(--mat-sys-on-surface-variant); margin-bottom: 6px; }
     .pct-badge { font-weight: 700; color: var(--mat-sys-primary); }
-    .status-active { background: #e8f5e9 !important; color: #2e7d32 !important; }
-    .status-completed { background: #e3f2fd !important; color: #1565c0 !important; }
-    .status-archived { background: #f5f5f5 !important; color: #757575 !important; }
+    .status-active { background: var(--mat-sys-primary-container) !important; color: var(--mat-sys-on-primary-container) !important; }
+    .status-completed { background: var(--mat-sys-success-container) !important; color: var(--mat-sys-on-success-container) !important; }
+    .status-archived { background: var(--mat-sys-error-container) !important; color: var(--mat-sys-on-error-container) !important; }
     .todos-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
-    .todo-row-link { text-decoration: none; }
+    .todo-row-link { text-decoration: none; cursor: pointer; }
     .todo-row mat-card-content { padding: 12px 16px !important; display: flex; align-items: center; justify-content: space-between; }
     .todo-left { display: flex; align-items: center; gap: 12px; }
     .todo-title { font-weight: 500; font-size: 14px; }
     .todo-sub { font-size: 12px; color: var(--mat-sys-on-surface-variant); }
     .todo-pct { font-weight: 700; color: var(--mat-sys-primary); font-size: 15px; }
-    .pub-icon { color: #1976d2; } .priv-icon { color: var(--mat-sys-on-surface-variant); }
+    .pub-icon { color:var(--mat-sys-primary); } .priv-icon { color: var(--mat-sys-on-surface-variant); }
   `]
 })
 export class DashboardComponent implements OnInit {

@@ -1,5 +1,13 @@
 const SimpleTodo = require("../models/todo.model");
 
+const getTodoById = async (id) => {
+  const todo = await SimpleTodo.findById(id).populate(
+    "owner",
+    "name email avatar",
+  );
+  return todo ? todo : null;
+};
+
 exports.createTodo = async (req, res) => {
   try {
     const { title, description, visibility, useSteps } = req.body;
@@ -35,10 +43,7 @@ exports.getTodos = async (req, res) => {
 
 exports.getTodo = async (req, res) => {
   try {
-    const todo = await SimpleTodo.findById(req.params.id).populate(
-      "owner",
-      "name email avatar",
-    );
+    const todo = await getTodoById(req.params.id);
     if (!todo) return res.status(404).json({ message: "Todo not found" });
     const canAccess =
       req.user.role === "admin" ||
@@ -53,10 +58,10 @@ exports.getTodo = async (req, res) => {
 
 exports.updateTodo = async (req, res) => {
   try {
-    const todo = await SimpleTodo.findById(req.params.id);
+    const todo = await getTodoById(req.params.id);
     if (!todo) return res.status(404).json({ message: "Todo not found" });
     if (
-      todo.owner.toString() !== req.user._id.toString() &&
+      todo.owner._id.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"
     ) {
       return res.status(403).json({ message: "Not authorized" });
@@ -71,10 +76,10 @@ exports.updateTodo = async (req, res) => {
 
 exports.deleteTodo = async (req, res) => {
   try {
-    const todo = await SimpleTodo.findById(req.params.id);
+    const todo = await getTodoById(req.params.id);
     if (!todo) return res.status(404).json({ message: "Todo not found" });
     if (
-      todo.owner.toString() !== req.user._id.toString() &&
+      todo.owner._id.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"
     ) {
       return res.status(403).json({ message: "Not authorized" });
@@ -88,7 +93,7 @@ exports.deleteTodo = async (req, res) => {
 
 exports.addStep = async (req, res) => {
   try {
-    const todo = await SimpleTodo.findById(req.params.id);
+    const todo = await getTodoById(req.params.id);
     if (!todo) return res.status(404).json({ message: "Todo not found" });
     todo.steps.push({ title: req.body.title, order: todo.steps.length });
     await todo.save();
@@ -101,7 +106,7 @@ exports.addStep = async (req, res) => {
 exports.addItem = async (req, res) => {
   try {
     const { text, description } = req.body;
-    const todo = await SimpleTodo.findById(req.params.id);
+    const todo = await getTodoById(req.params.id);
     if (!todo) return res.status(404).json({ message: "Todo not found" });
     let step;
     if (req.params.stepId) {
@@ -122,7 +127,7 @@ exports.addItem = async (req, res) => {
 
 exports.toggleItem = async (req, res) => {
   try {
-    const todo = await SimpleTodo.findById(req.params.id);
+    const todo = await getTodoById(req.params.id);
     const step = todo.steps.id(req.params.stepId);
     if (!step) return res.status(404).json({ message: "Step not found" });
     const item = step.items.id(req.params.itemId);
@@ -137,7 +142,7 @@ exports.toggleItem = async (req, res) => {
 
 exports.deleteItem = async (req, res) => {
   try {
-    const todo = await SimpleTodo.findById(req.params.id);
+    const todo = await getTodoById(req.params.id);
     const step = todo.steps.id(req.params.stepId);
     if (!step) return res.status(404).json({ message: "Step not found" });
     step.items = step.items.filter(

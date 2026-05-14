@@ -38,42 +38,43 @@ import { ThemeService } from "../../../core/services/theme.service";
   template: `
     <mat-sidenav-container class="sidenav-container" [hasBackdrop]="isMobile" >
       <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidenav">
-        <div class="sidenav-header">
-          <span class="logo">✅</span>
-          <span class="app-name">Project Todo</span>
-        </div>
-        <mat-nav-list>
-          <a
-            mat-list-item
-            routerLink="/dashboard"
-            routerLinkActive="active-link"
-          >
-            <mat-icon matListItemIcon>dashboard</mat-icon>
-            <span matListItemTitle>Dashboard</span>
-          </a>
-          @if (canSeeProjects()) {
+        <div class="sidenav-content">
+          <div class="sidenav-header">
+              <span class="logo">✅</span>
+              <span class="app-name">Project Todo</span>
+          </div>
+          <mat-nav-list>
             <a
               mat-list-item
-              routerLink="/projects"
+              routerLink="/dashboard"
               routerLinkActive="active-link"
             >
-              <mat-icon matListItemIcon>folder</mat-icon>
-              <span matListItemTitle>Projects</span>
+              <mat-icon matListItemIcon>dashboard</mat-icon>
+              <span matListItemTitle>Dashboard</span>
             </a>
-          }
-          <a mat-list-item routerLink="/todos" routerLinkActive="active-link">
-            <mat-icon matListItemIcon>checklist</mat-icon>
-            <span matListItemTitle>My Todos</span>
-          </a>
-          @if (isAdmin()) {
-            <mat-divider style="margin:8px 0" />
-            <a mat-list-item routerLink="/admin" routerLinkActive="active-link">
-              <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
-              <span matListItemTitle>Admin Panel</span>
+            @if (canSeeProjects()) {
+              <a
+                mat-list-item
+                routerLink="/projects"
+                routerLinkActive="active-link"
+              >
+                <mat-icon matListItemIcon>folder</mat-icon>
+                <span matListItemTitle>Projects</span>
+              </a>
+            }
+            <a mat-list-item routerLink="/todos" routerLinkActive="active-link">
+              <mat-icon matListItemIcon>checklist</mat-icon>
+              <span matListItemTitle>My Todos</span>
             </a>
-          }
-        </mat-nav-list>
-
+            @if (isAdmin()) {
+              <mat-divider style="margin:8px 0" />
+              <a mat-list-item routerLink="/admin" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
+                <span matListItemTitle>Admin Panel</span>
+              </a>
+            }
+          </mat-nav-list>
+        </div>
         <div class="sidenav-footer">
           <div class="user-info" [matMenuTriggerFor]="userMenu">
             <div class="avatar">{{ userInitial() }}</div>
@@ -97,7 +98,7 @@ import { ThemeService } from "../../../core/services/theme.service";
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <mat-toolbar class="toolbar">
+        <mat-toolbar class="toolbar mat-elevation-z8"  color="primary">
           <button mat-icon-button (click)="sidenav.toggle()" class="menu-btn">
             <mat-icon>menu</mat-icon>
           </button>
@@ -123,19 +124,24 @@ import { ThemeService } from "../../../core/services/theme.service";
     `
       .sidenav-container {
         height: 100vh;
+        overflow: hidden;
       }
       .sidenav {
         width: 260px;
         border-right: 1px solid var(--mat-sys-outline-variant);
-        display: flex;
-        flex-direction: column;
+        
+      }
+      ::ng-deep .mat-drawer-inner-container {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        align-items: stretch !important;
       }
       .sidenav-header {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 20px 16px 12px;
-        border-bottom: 1px solid var(--mat-sys-outline-variant);
+        padding: 12px ;
       }
       .logo {
         font-size: 28px;
@@ -144,10 +150,12 @@ import { ThemeService } from "../../../core/services/theme.service";
         font-size: 16px;
         font-weight: 700;
       }
+      .mat-mdc-list-item{
+        border-radius: 0px !important;
+      }
       .active-link {
         background: var(--mat-sys-primary-container) !important;
         color: var(--mat-sys-on-primary-container) !important;
-        border-radius: 8px;
       }
       .active-link mat-icon {
         color: var(--mat-sys-on-primary-container) !important;
@@ -201,6 +209,9 @@ import { ThemeService } from "../../../core/services/theme.service";
       }
       .toolbar {
         border-bottom: 1px solid var(--mat-sys-outline-variant);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
       .toolbar-spacer {
         flex: 1;

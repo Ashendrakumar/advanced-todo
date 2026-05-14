@@ -9,6 +9,7 @@ const itemSchema = new mongoose.Schema(
       enum: ["required", "review", "tip", "none"],
       default: "none",
     },
+    // createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     isCompleted: { type: Boolean, default: false },
     completedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     completedAt: { type: Date },
